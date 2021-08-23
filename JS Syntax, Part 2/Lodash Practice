@@ -1,0 +1,103 @@
+const _ = {
+  clamp(number, lower, upper){
+    const lowerClampedValue = Math.max(number, lower);
+    const clampedValue = Math.min(lowerClampedValue, upper);
+    return clampedValue;
+  }, 
+
+  inRange(number, start, end){
+    if(end === undefined) {
+      end = start;
+      start = 0;
+    } 
+    if (start > end){
+      let temp = end;
+      end = start;
+      start = temp;
+    }
+    
+    if(start <= number && number < end){
+      return true;
+    } else {
+      return false;
+    }
+  }, 
+
+  words(string){
+    const words = string.split(' ');
+    return words;
+  }, 
+
+  pad(string, length){
+    if(string.length < length){
+      let frontPad = Math.floor((length - string.length) / 2);
+      let endPad = (length - string.length - frontPad);
+      let finalString = ' '.repeat(frontPad).concat(string).concat(' '.repeat(endPad));
+      return finalString;
+    } else {
+      return string;
+    }
+  }, 
+
+  has(object, key){
+    let hasValue = (object[key] != undefined)
+    return hasValue;
+  },
+
+  invert(object){
+    let invertedObject = {};
+    for(let key in object){
+      let originalValue = object[key];
+      invertedObject[originalValue] = key; 
+      }
+      return invertedObject;
+    },
+
+    findKey(object, preFunc){
+      for(let key in object){
+        let value = object[key];
+        let returnVal = preFunc(value);
+        if(returnVal === true){
+          return key;
+        }
+      }
+      return undefined
+    },
+
+    drop(arr, num){
+      let newArr = [];
+      if(num == null){
+        num = 1;
+      } 
+      let j = 0;
+      for(let i = num; i < arr.length; i++){
+        newArr[j] = arr[i];
+        j++;
+      }
+      return newArr;
+    },
+
+    dropWhile(arr, preFunc){
+      let dropNumber = arr.findIndex(function(element, index) {
+        return !preFunc(element, index, arr)
+      });
+      let droppedArray = this.drop(arr, dropNumber);
+      return droppedArray
+    },
+
+    chunk(arr, size){
+      let arrChunks = [];
+      if(size == null){
+        size = 1;
+      }
+      for(let i = 0; i < arr.length; i += size){
+        let num = i + size;
+        let arrayChunk = arr.slice(i, num);
+        arrChunks.push(arrayChunk);
+      }
+      return arrChunks;
+    }
+};
+
+// Do not write or modify code below this line.
+module.exports = _;
