@@ -1,0 +1,66 @@
+// Returns a random DNA base
+const returnRandBase = () => {
+  const dnaBases = ['A', 'T', 'C', 'G']
+  return dnaBases[Math.floor(Math.random() * 4)] 
+}
+
+// Returns a random single stand of DNA containing 15 bases
+const mockUpStrand = () => {
+  const newStrand = []
+  for (let i = 0; i < 15; i++) {
+    newStrand.push(returnRandBase())
+  }
+  return newStrand
+}
+
+const pAequorFactory = (specimenNum, dna) => {
+  const pAequor = {
+    specimenNum: specimenNum,
+    dna: dna,
+    mutate(){
+      const index = Math.floor(Math.random() * 14);
+      let base = returnRandBase();
+      do {
+        base = returnRandBase();
+      } while (this.dna[index] === base)
+      this.dna[index] = base;
+      return this.dna;
+    },
+    compareDNA(pAequor){
+      let percent = 0;
+      for (let i = 0; i < this.dna.length; i++) {
+        if (this.dna[i] == pAequor.dna[i]) {
+          percent += 1;
+        }
+      }
+     let totalPercent = percent * 100/this.dna.length;
+     console.log(`Specimen ${this.specimenNum} and specimen ${pAequor.specimenNum} have ${totalPercent.toFixed(2)}% DNA in common`)
+    },
+    willLikelySurvive(){
+      let percent = 0;
+      for (let i = 0; i < this.dna.length; i++) {
+        if (this.dna[i] == 'C' || this.dna[i] == 'G'){
+          percent += 1;
+        }
+    }
+    if((percent * 100/this.dna.length) >= 60){
+      return true;
+    } else {
+      return false
+    }
+  }
+}
+  return pAequor;
+}
+
+let instances = [];
+for(let i = 1; i < 31; i++){
+  let newPA;
+  do{
+  let newStrand = mockUpStrand();
+  newPA = pAequorFactory(i, newStrand);
+  } while (newPA.willLikelySurvive() == false)
+  instances.push(newPA);
+}
+
+console.log(instances);
